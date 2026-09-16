@@ -1,588 +1,1154 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Álbum de Luxo | PhotoBook Premium</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LUXE ALBUM · PhotoBook Premium com Exportação para Impressão</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    body {
-      background: #0c0b0e;
-      background-image: radial-gradient(circle at 10% 20%, rgba(75, 45, 45, 0.15) 0%, transparent 35%),
-                        radial-gradient(circle at 90% 80%, rgba(120, 80, 50, 0.12) 0%, transparent 40%),
-                        repeating-linear-gradient(45deg, rgba(255, 215, 150, 0.02) 0px, rgba(255, 215, 150, 0.02) 2px, transparent 2px, transparent 8px);
-      min-height: 100vh;
-      font-family: 'Montserrat', sans-serif;
-      padding: 2rem 1.5rem 4rem;
-      color: #e9e1d4;
-    }
+  :root {
+    --gold: #c9a96e;
+    --gold-light: #f3e3c9;
+    --gold-dark: #8b6f3f;
+    --bg: #0c0b0e;
+    --card-bg: #181512;
+    --text: #e9e1d4;
+  }
 
-    /* Efeito de textura de mármore/veludo */
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at 30% 40%, rgba(180, 130, 70, 0.03) 0%, transparent 60%);
-      pointer-events: none;
-      z-index: 0;
-    }
+  body {
+    background: var(--bg);
+    background-image:
+      radial-gradient(circle at 10% 20%, rgba(75, 45, 45, 0.15) 0%, transparent 35%),
+      radial-gradient(circle at 90% 80%, rgba(120, 80, 50, 0.12) 0%, transparent 40%),
+      repeating-linear-gradient(45deg, rgba(255, 215, 150, 0.02) 0px, rgba(255, 215, 150, 0.02) 2px, transparent 2px, transparent 8px);
+    min-height: 100vh;
+    font-family: 'Montserrat', sans-serif;
+    padding: 2rem 1.5rem 4rem;
+    color: var(--text);
+  }
 
-    .container {
-      position: relative;
-      z-index: 2;
-      max-width: 1440px;
-      margin: 0 auto;
-    }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at 30% 40%, rgba(180, 130, 70, 0.03) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
 
-    /* Cabeçalho de luxo */
-    .header {
-      text-align: center;
-      margin-bottom: 3rem;
-      position: relative;
-    }
+  .container { position: relative; z-index: 2; max-width: 1440px; margin: 0 auto; }
 
-    .header h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 4rem;
-      font-weight: 700;
-      letter-spacing: 6px;
-      text-transform: uppercase;
-      background: linear-gradient(135deg, #c9a96e, #f3e3c9, #b48b4b, #e7cfab);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      text-shadow: 0 0 20px rgba(201, 169, 110, 0.3);
-      margin-bottom: 0.5rem;
-    }
+  /* ============ HEADER ============ */
+  .header { text-align: center; margin-bottom: 3rem; }
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 700;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, #c9a96e, #f3e3c9, #b48b4b, #e7cfab);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 20px rgba(201, 169, 110, 0.3);
+    margin-bottom: 0.5rem;
+  }
+  .header .sub {
+    font-weight: 300;
+    font-size: 0.85rem;
+    letter-spacing: 8px;
+    color: #b9a68b;
+    text-transform: uppercase;
+    border-top: 1px solid rgba(201, 169, 110, 0.3);
+    border-bottom: 1px solid rgba(201, 169, 110, 0.3);
+    display: inline-block;
+    padding: 0.75rem 2rem;
+  }
 
-    .header .sub {
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 300;
-      font-size: 1rem;
-      letter-spacing: 8px;
-      color: #b9a68b;
-      text-transform: uppercase;
-      border-top: 1px solid rgba(201, 169, 110, 0.3);
-      border-bottom: 1px solid rgba(201, 169, 110, 0.3);
-      display: inline-block;
-      padding: 0.75rem 2rem;
-      backdrop-filter: blur(2px);
-    }
+  /* ============ UPLOAD ============ */
+  .upload-area {
+    background: rgba(20, 18, 18, 0.7);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(201, 169, 110, 0.4);
+    border-radius: 24px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), inset 0 1px 2px rgba(255, 245, 220, 0.08);
+    transition: all 0.4s;
+  }
+  .upload-area:hover { border-color: rgba(201, 169, 110, 0.8); }
 
-    /* Área de upload elegante */
-    .upload-area {
-      background: rgba(20, 18, 18, 0.7);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(201, 169, 110, 0.4);
-      border-radius: 24px;
-      padding: 2.5rem 2rem;
-      margin-bottom: 2.5rem;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), inset 0 1px 2px rgba(255, 245, 220, 0.08);
-      transition: all 0.4s;
-    }
+  .upload-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    gap: 0.8rem;
+  }
+  .upload-label svg {
+    width: 55px; height: 55px;
+    stroke: var(--gold);
+    stroke-width: 1.2;
+    filter: drop-shadow(0 0 8px rgba(201, 169, 110, 0.5));
+  }
+  .upload-label span { font-size: 1.15rem; letter-spacing: 2px; color: #d8c8b0; font-weight: 300; }
+  .upload-label small { color: #9e8b74; font-size: 0.75rem; letter-spacing: 1px; }
+  input[type="file"] { display: none; }
 
-    .upload-area:hover {
-      border-color: rgba(201, 169, 110, 0.8);
-      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(201, 169, 110, 0.1);
-    }
+  /* ============ BARRA DE AÇÕES ============ */
+  .actions-bar {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
 
-    .upload-label {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      cursor: pointer;
-      gap: 1rem;
-    }
+  .btn {
+    background: linear-gradient(145deg, #1f1b16, #2a241c);
+    border: 1px solid var(--gold);
+    color: #f0e2d0;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 0.85rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 0.9rem 2rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn:hover:not(:disabled) {
+    background: linear-gradient(145deg, #2a241c, #3a3226);
+    border-color: var(--gold-light);
+    box-shadow: 0 0 30px rgba(201, 169, 110, 0.4), 0 10px 25px rgba(0, 0, 0, 0.9);
+    transform: translateY(-2px);
+  }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn.primary { background: linear-gradient(145deg, #6b5120, #8b6f3f); border-color: var(--gold-light); }
+  .btn.primary:hover:not(:disabled) { background: linear-gradient(145deg, #8b6f3f, #a8854f); }
 
-    .upload-label svg {
-      width: 60px;
-      height: 60px;
-      stroke: #c9a96e;
-      stroke-width: 1.2;
-      filter: drop-shadow(0 0 8px rgba(201, 169, 110, 0.5));
-    }
+  /* ============ INFO PANEL ============ */
+  .info-panel {
+    background: rgba(20, 18, 18, 0.6);
+    border: 1px solid rgba(201, 169, 110, 0.25);
+    border-radius: 16px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 0.85rem;
+    color: #b9a68b;
+    letter-spacing: 1px;
+  }
+  .info-panel .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(201, 169, 110, 0.1);
+    border: 1px solid rgba(201, 169, 110, 0.3);
+    padding: 0.35rem 0.9rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    color: var(--gold-light);
+  }
+  .info-panel strong { color: var(--gold); font-weight: 600; }
 
-    .upload-label span {
-      font-size: 1.2rem;
-      letter-spacing: 2px;
-      color: #d8c8b0;
-      font-weight: 300;
-    }
+  /* ============ STATUS ============ */
+  .status-msg {
+    text-align: center;
+    margin: 1rem 0;
+    font-size: 0.85rem;
+    color: #b9a68b;
+    letter-spacing: 2px;
+    min-height: 1.2rem;
+  }
+  .status-msg.success { color: #8fbf7a; }
+  .status-msg.error { color: #d98780; }
 
-    .upload-label small {
-      color: #9e8b74;
-      font-size: 0.8rem;
-      letter-spacing: 1px;
-    }
+  /* ============ GRID DO ÁLBUM ============ */
+  .album-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
 
-    input[type="file"] {
-      display: none;
-    }
+  .photo-card {
+    background: linear-gradient(145deg, #181512, #0e0c0a);
+    border: 1px solid rgba(201, 169, 110, 0.3);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.8);
+    transition: transform 0.35s, box-shadow 0.35s, border-color 0.35s;
+    position: relative;
+    aspect-ratio: 175 / 260; /* proporção exata 17,5 x 26 cm */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .photo-card:hover {
+    transform: translateY(-6px) scale(1.015);
+    border-color: var(--gold);
+    box-shadow: 0 30px 45px -12px black, 0 0 30px rgba(201, 169, 110, 0.25);
+    z-index: 5;
+  }
+  .photo-card img {
+    width: 100%; height: 100%;
+    object-fit: cover; /* corte inteligente preservando a proporção 17,5x26 */
+    display: block;
+    background: #0a0907;
+    transition: transform 0.5s, filter 0.5s;
+  }
+  .photo-card:hover img { transform: scale(1.04); }
 
-    /* Botão de gerar álbum */
-    .btn-album {
-      background: linear-gradient(145deg, #1f1b16, #2a241c);
-      border: 1px solid #c9a96e;
-      color: #f0e2d0;
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 400;
-      font-size: 1rem;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      padding: 1rem 3rem;
-      border-radius: 50px;
-      cursor: pointer;
-      transition: all 0.4s;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7), 0 0 15px rgba(201, 169, 110, 0.2);
-      margin-bottom: 2.5rem;
-      display: inline-block;
-      position: relative;
-      overflow: hidden;
-    }
+  .photo-card::before {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    border: 1px solid rgba(201, 169, 110, 0.18);
+    border-radius: 8px;
+    pointer-events: none;
+    transition: border-color 0.4s;
+    z-index: 3;
+  }
+  .photo-card:hover::before { border-color: rgba(201, 169, 110, 0.55); }
 
-    .btn-album::after {
-      content: "";
-      position: absolute;
-      top: -50%;
-      left: -60%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(255, 235, 200, 0.15) 0%, transparent 70%);
-      opacity: 0;
-      transition: opacity 0.6s;
-    }
+  /* Overlay de ações no card */
+  .photo-card .card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 45%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 1rem;
+    z-index: 4;
+    pointer-events: none;
+  }
+  .photo-card:hover .card-overlay { opacity: 1; }
+  .card-overlay button {
+    pointer-events: auto;
+    background: rgba(201, 169, 110, 0.85);
+    color: #1a1512;
+    border: none;
+    padding: 0.45rem 1rem;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.25s;
+    font-family: 'Montserrat', sans-serif;
+  }
+  .card-overlay button:hover { background: var(--gold-light); transform: scale(1.05); }
 
-    .btn-album:hover {
-      background: linear-gradient(145deg, #2a241c, #3a3226);
-      border-color: #e7cfab;
-      box-shadow: 0 0 30px rgba(201, 169, 110, 0.4), 0 10px 25px rgba(0, 0, 0, 0.9);
-      letter-spacing: 5px;
-    }
+  .photo-card .index-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(0, 0, 0, 0.7);
+    color: var(--gold-light);
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 0.25rem 0.55rem;
+    border-radius: 12px;
+    letter-spacing: 1px;
+    z-index: 4;
+    border: 1px solid rgba(201, 169, 110, 0.4);
+  }
 
-    .btn-album:hover::after {
-      opacity: 1;
-    }
+  .empty-message {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #5f5343;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-style: italic;
+    border: 1px dashed rgba(201, 169, 110, 0.3);
+    border-radius: 24px;
+    background: rgba(0, 0, 0, 0.3);
+    grid-column: 1 / -1;
+  }
 
-    /* Contador de fotos */
-    .photo-counter {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.1rem;
-      color: #c9a96e;
-      text-align: right;
-      margin-top: 1rem;
-      font-style: italic;
-      letter-spacing: 1px;
-      border-bottom: 1px dashed rgba(201, 169, 110, 0.3);
-      padding-bottom: 0.75rem;
-    }
+  /* ============ MODAL DE EDIÇÃO ============ */
+  .modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.92);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    animation: fadeIn 0.3s;
+  }
+  .modal.active { display: flex; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-    /* GRADE DO ÁLBUM — estilo galeria de luxo */
-    .album-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1.8rem;
-      margin-top: 2rem;
-      perspective: 1200px;
-    }
+  .modal-content {
+    background: var(--card-bg);
+    border: 1px solid rgba(201, 169, 110, 0.5);
+    border-radius: 20px;
+    max-width: 1100px;
+    width: 100%;
+    max-height: 95vh;
+    overflow: auto;
+    padding: 1.5rem;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9);
+  }
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(201, 169, 110, 0.2);
+  }
+  .modal-header h2 {
+    font-family: 'Playfair Display', serif;
+    color: var(--gold-light);
+    font-size: 1.4rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  .modal-close {
+    background: none;
+    border: 1px solid rgba(201, 169, 110, 0.4);
+    color: var(--gold);
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.3s;
+  }
+  .modal-close:hover { background: rgba(201, 169, 110, 0.15); transform: rotate(90deg); }
 
-    /* Cartão de foto individual */
-    .photo-card {
-      background: #12100e;
-      border: 1px solid rgba(201, 169, 110, 0.3);
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(201, 169, 110, 0.1) inset;
-      transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1), box-shadow 0.4s, border-color 0.4s;
-      position: relative;
-      aspect-ratio: 1 / 1; /* base quadrada, mas o conteúdo interno se adapta */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(145deg, #181512, #0e0c0a);
-    }
+  .cropper-wrapper {
+    max-height: 55vh;
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+  }
+  .cropper-wrapper img { max-width: 100%; display: block; }
 
-    .photo-card:hover {
-      transform: translateY(-8px) scale(1.02);
-      border-color: #c9a96e;
-      box-shadow: 0 30px 40px -12px black, 0 0 30px rgba(201, 169, 110, 0.2);
-      z-index: 5;
-    }
+  .cropper-controls {
+    display: flex;
+    gap: 0.6rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+  .cropper-controls button {
+    background: rgba(201, 169, 110, 0.12);
+    border: 1px solid rgba(201, 169, 110, 0.4);
+    color: var(--gold-light);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    letter-spacing: 1.5px;
+    font-family: 'Montserrat', sans-serif;
+    transition: all 0.25s;
+  }
+  .cropper-controls button:hover { background: rgba(201, 169, 110, 0.25); color: #fff; }
 
-    /* A imagem ocupa toda a área, mas mantém a proporção */
-    .photo-card img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;  /* mantém a foto inteira, sem cortes */
-      display: block;
-      background: #0a0907;
-      transition: transform 0.5s, filter 0.5s;
-      filter: brightness(0.95) contrast(1.05) saturate(1.1);
-    }
+  .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
 
-    .photo-card:hover img {
-      transform: scale(1.03);
-      filter: brightness(1.05) contrast(1.1) saturate(1.15);
-    }
+  /* ============ PREVIEW DE IMPRESSÃO ============ */
+  .print-preview {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.96);
+    backdrop-filter: blur(10px);
+    z-index: 2000;
+    display: none;
+    flex-direction: column;
+    padding: 1.5rem;
+    overflow: auto;
+  }
+  .print-preview.active { display: flex; }
 
-    /* Moldura dourada sutil */
-    .photo-card::before {
-      content: "";
-      position: absolute;
-      top: 8px;
-      left: 8px;
-      right: 8px;
-      bottom: 8px;
-      border: 1px solid rgba(201, 169, 110, 0.15);
-      border-radius: 10px;
-      pointer-events: none;
-      transition: border-color 0.4s;
-      z-index: 3;
-    }
+  .print-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: rgba(20, 18, 18, 0.9);
+    border: 1px solid rgba(201, 169, 110, 0.4);
+    border-radius: 16px;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .print-toolbar .title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--gold-light);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  .print-toolbar .specs {
+    font-size: 0.75rem;
+    color: #9e8b74;
+    letter-spacing: 1px;
+  }
+  .print-toolbar .specs strong { color: var(--gold); }
 
-    .photo-card:hover::before {
-      border-color: rgba(201, 169, 110, 0.5);
-    }
+  .print-pages {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    padding-bottom: 3rem;
+  }
 
-    /* Efeito de orientação: quando for vertical (retrato), a proporção se ajusta */
-    /* Não precisamos forçar tamanho, o object-fit: contain já respeita a orientação original */
+  /* ============ PÁGINA DE IMPRESSÃO (17,5 x 26 cm) ============ */
+  .print-page {
+    width: 661.42px;   /* 17.5cm @ 96dpi = 661.42px */
+    height: 982.68px;  /* 26cm  @ 96dpi = 982.68px */
+    background: #ffffff;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    flex-shrink: 0;
+  }
 
-    /* Para destacar fotos verticais ou horizontais, podemos adicionar um leve indicador */
-    .photo-card[data-orientation="portrait"] {
-      /* Nada extra, apenas para referência */
-    }
+  /* Marcas de corte nos 4 cantos */
+  .crop-marks {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 10;
+  }
+  .crop-marks::before,
+  .crop-marks::after,
+  .crop-marks .mark-tr,
+  .crop-marks .mark-bl {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-color: #000;
+    border-style: solid;
+    border-width: 0;
+  }
+  /* Canto superior esquerdo */
+  .crop-marks::before {
+    top: 6px; left: 6px;
+    border-top-width: 1.5px;
+    border-left-width: 1.5px;
+  }
+  /* Canto inferior direito */
+  .crop-marks::after {
+    bottom: 6px; right: 6px;
+    border-bottom-width: 1.5px;
+    border-right-width: 1.5px;
+  }
+  /* Canto superior direito */
+  .crop-marks .mark-tr {
+    top: 6px; right: 6px;
+    border-top-width: 1.5px;
+    border-right-width: 1.5px;
+  }
+  /* Canto inferior esquerdo */
+  .crop-marks .mark-bl {
+    bottom: 6px; left: 6px;
+    border-bottom-width: 1.5px;
+    border-left-width: 1.5px;
+  }
 
-    .photo-card[data-orientation="landscape"] {
-      /* Nada extra */
-    }
+  /* Linhas de corte (sangria) - tracejadas cinza */
+  .bleed-line {
+    position: absolute;
+    inset: 3px;
+    border: 0.5px dashed #999;
+    pointer-events: none;
+    z-index: 9;
+  }
 
-    /* Estado vazio */
-    .empty-message {
-      text-align: center;
-      padding: 4rem 2rem;
-      color: #5f5343;
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
-      font-style: italic;
-      border: 1px dashed rgba(201, 169, 110, 0.3);
-      border-radius: 24px;
-      background: rgba(0, 0, 0, 0.3);
-      grid-column: 1 / -1;
-    }
+  /* Área de segurança */
+  .safe-area {
+    position: absolute;
+    inset: 25px;
+    border: 0.5px dotted #ccc;
+    pointer-events: none;
+    z-index: 9;
+  }
 
-    /* Rodapé */
-    .footer {
-      margin-top: 4rem;
-      text-align: center;
-      font-size: 0.7rem;
-      letter-spacing: 3px;
-      color: #4a4036;
-      text-transform: uppercase;
-    }
+  /* Rótulo de informação da página */
+  .page-info {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 8px;
+    color: #666;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    z-index: 8;
+    background: rgba(255,255,255,0.9);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
 
-    /* Barra de progresso / feedback */
-    .status-msg {
-      text-align: center;
-      margin-top: 1rem;
-      font-size: 0.85rem;
-      color: #b9a68b;
-      letter-spacing: 2px;
-      transition: opacity 0.3s;
-    }
+  /* Foto na página - ajuste automático 100% confiável */
+  .print-page .page-photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
 
-    /* Responsividade */
-    @media (max-width: 700px) {
-      .header h1 {
-        font-size: 2.2rem;
-        letter-spacing: 3px;
-      }
-      .header .sub {
-        font-size: 0.7rem;
-        letter-spacing: 4px;
-      }
-      .upload-area {
-        padding: 1.5rem;
-      }
-      .btn-album {
-        padding: 0.8rem 1.5rem;
-        font-size: 0.8rem;
-        letter-spacing: 2px;
-      }
-      .album-grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        gap: 1rem;
-      }
-      .photo-card::before {
-        top: 4px;
-        left: 4px;
-        right: 4px;
-        bottom: 4px;
-      }
-    }
-  </style>
+  /* ============ RESPONSIVO ============ */
+  @media (max-width: 700px) {
+    .header h1 { font-size: 2rem; letter-spacing: 3px; }
+    .header .sub { font-size: 0.65rem; letter-spacing: 4px; padding: 0.6rem 1rem; }
+    .upload-area { padding: 1.5rem; }
+    .btn { padding: 0.7rem 1.3rem; font-size: 0.72rem; letter-spacing: 2px; }
+    .album-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1rem; }
+    .print-page { transform: scale(0.55); transform-origin: top center; margin-bottom: -400px; }
+  }
+
+  /* Loader */
+  .loader {
+    display: inline-block;
+    width: 14px; height: 14px;
+    border: 2px solid rgba(201, 169, 110, 0.3);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    vertical-align: middle;
+    margin-right: 0.5rem;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <h1>LUXE ALBUM</h1>
-      <div class="sub">Fotografia de eventos · Edição de prestígio</div>
-    </div>
+<div class="container">
 
-    <!-- Área de upload -->
-    <div class="upload-area">
-      <label for="fileInput" class="upload-label">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-          <polyline points="17 8 12 3 7 8" />
-          <line x1="12" y1="3" x2="12" y2="15" />
-        </svg>
-        <span>Importar fotografias</span>
-        <small>Suporta mais de 100 imagens · JPG, PNG, WEBP</small>
-      </label>
-      <input type="file" id="fileInput" accept="image/*" multiple>
-      <div class="status-msg" id="statusMsg"></div>
-    </div>
+  <!-- HEADER -->
+  <div class="header">
+    <h1>LUXE ALBUM</h1>
+    <div class="sub">Fotografia de eventos · Edição de prestígio</div>
+  </div>
 
-    <!-- Botão principal -->
-    <div style="text-align: center;">
-      <button class="btn-album" id="generateBtn">Gerar álbum de luxo</button>
-    </div>
+  <!-- UPLOAD -->
+  <div class="upload-area">
+    <label for="fileInput" class="upload-label">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+        <polyline points="17 8 12 3 7 8" />
+        <line x1="12" y1="3" x2="12" y2="15" />
+      </svg>
+      <span>Importar fotografias</span>
+      <small>Suporta 100+ imagens · JPG, PNG, WEBP, HEIC</small>
+    </label>
+    <input type="file" id="fileInput" accept="image/*" multiple>
+  </div>
 
-    <!-- Contador -->
-    <div class="photo-counter" id="photoCounter">0 fotografias importadas</div>
+  <!-- INFO PANEL -->
+  <div class="info-panel">
+    <div><span class="badge">📐 Formato final: <strong>17,5 × 26 cm</strong></span></div>
+    <div><span class="badge">✂️ Sangria: 3mm · Área segura: 5mm</span></div>
+    <div><span class="badge">🖨️ <strong>300 DPI</strong> para impressão</span></div>
+  </div>
 
-    <!-- Álbum de fotos -->
-    <div class="album-grid" id="albumGrid">
-      <!-- Estado inicial vazio -->
-      <div class="empty-message" id="emptyMessage">
-        Suas fotografias aparecerão aqui em um álbum de prestígio
-      </div>
-    </div>
+  <!-- AÇÕES -->
+  <div class="actions-bar">
+    <button class="btn" id="generateBtn" disabled>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="3" width="18" height="18" rx="2"/>
+        <circle cx="8.5" cy="8.5" r="1.5"/>
+        <path d="M21 15l-5-5L5 21"/>
+      </svg>
+      Gerar Álbum
+    </button>
+    <button class="btn primary" id="exportBtn" disabled>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      Exportar para Impressão
+    </button>
+    <button class="btn" id="clearBtn" disabled>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="3 6 5 6 21 6"/>
+        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+      </svg>
+      Limpar
+    </button>
+  </div>
 
-    <div class="footer">
-      © LUXE ALBUM · Coleção privada
+  <div class="status-msg" id="statusMsg">Selecione as fotografias para começar</div>
+
+  <!-- GRID -->
+  <div class="album-grid" id="albumGrid">
+    <div class="empty-message" id="emptyMessage">
+      Suas fotografias aparecerão aqui em um álbum de prestígio
     </div>
   </div>
 
-  <script>
-    (function() {
-      // Elementos DOM
-      const fileInput = document.getElementById('fileInput');
-      const generateBtn = document.getElementById('generateBtn');
-      const albumGrid = document.getElementById('albumGrid');
-      const photoCounter = document.getElementById('photoCounter');
-      const statusMsg = document.getElementById('statusMsg');
-      const emptyMessage = document.getElementById('emptyMessage');
+</div>
 
-      // Estado: armazena os arquivos de imagem (File objects) e as URLs dos objetos
-      let selectedFiles = [];        // Array de File
-      let imageUrls = [];           // Array de strings (URLs de objeto)
+<!-- ============ MODAL DE EDIÇÃO ============ -->
+<div class="modal" id="editModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Ajuste Fino</h2>
+      <button class="modal-close" id="modalClose">×</button>
+    </div>
+    <div class="cropper-wrapper">
+      <img id="cropperImage" src="" alt="Editar">
+    </div>
+    <div class="cropper-controls">
+      <button data-action="rotateL">↺ Girar -90°</button>
+      <button data-action="rotateR">↻ Girar +90°</button>
+      <button data-action="flipH">↔ Espelhar H</button>
+      <button data-action="flipV">↕ Espelhar V</button>
+      <button data-action="reset">⟲ Resetar</button>
+      <button data-action="fit">⤢ Ajustar</button>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" id="modalCancel">Cancelar</button>
+      <button class="btn primary" id="modalSave">Salvar Ajuste</button>
+    </div>
+  </div>
+</div>
 
-      // Função para limpar todas as URLs de objeto criadas (evitar vazamentos)
-      function revokeAllUrls() {
-        imageUrls.forEach(url => URL.revokeObjectURL(url));
-        imageUrls = [];
-      }
+<!-- ============ PREVIEW DE IMPRESSÃO ============ -->
+<div class="print-preview" id="printPreview">
+  <div class="print-toolbar">
+    <div>
+      <div class="title">Pré-visualização de Impressão</div>
+      <div class="specs">
+        Formato: <strong>17,5 × 26 cm</strong> · 
+        <strong id="previewCount">0</strong> páginas · 
+        Resolução: <strong>300 DPI</strong> · 
+        Sangria: <strong>3mm</strong>
+      </div>
+    </div>
+    <div style="display:flex; gap:0.7rem; flex-wrap:wrap;">
+      <button class="btn" id="closePreviewBtn">← Voltar</button>
+      <button class="btn" id="printBtn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="6 9 6 2 18 2 18 9"/>
+          <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+          <rect x="6" y="14" width="12" height="8"/>
+        </svg>
+        Imprimir
+      </button>
+      <button class="btn primary" id="downloadPdfBtn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        Baixar PDF
+      </button>
+    </div>
+  </div>
+  <div class="print-pages" id="printPages"></div>
+</div>
 
-      // Atualiza o contador e o estado do botão
-      function updateCounter() {
-        const count = selectedFiles.length;
-        photoCounter.textContent = count === 0 
-          ? '0 fotografias importadas' 
-          : `${count} fotografia${count > 1 ? 's' : ''} importada${count > 1 ? 's' : ''}`;
-        
-        if (count === 0) {
-          statusMsg.textContent = '';
-        } else {
-          statusMsg.textContent = `Pronto para gerar álbum com ${count} imagem${count > 1 ? 's' : ''}`;
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+(function() {
+  'use strict';
+
+  // ============ CONSTANTES ============
+  const CM_TO_PX_96 = 37.7952755906; // 1cm @ 96dpi
+  const CM_TO_PX_300 = 118.1102362205; // 1cm @ 300dpi
+  const PAGE_W_CM = 17.5;
+  const PAGE_H_CM = 26;
+  const BLEED_CM = 0.3; // 3mm sangria
+  const SAFE_CM = 0.5;  // 5mm área segura
+  const DPI = 300;
+
+  // ============ ESTADO ============
+  const state = {
+    files: [],          // Array de File
+    items: [],          // Array de { file, originalUrl, editedUrl, cropData, rotation, flipH, flipV }
+    generated: false
+  };
+
+  // ============ DOM ============
+  const fileInput = document.getElementById('fileInput');
+  const generateBtn = document.getElementById('generateBtn');
+  const exportBtn = document.getElementById('exportBtn');
+  const clearBtn = document.getElementById('clearBtn');
+  const albumGrid = document.getElementById('albumGrid');
+  const statusMsg = document.getElementById('statusMsg');
+  const emptyMessage = document.getElementById('emptyMessage');
+  const editModal = document.getElementById('editModal');
+  const cropperImage = document.getElementById('cropperImage');
+  const modalClose = document.getElementById('modalClose');
+  const modalCancel = document.getElementById('modalCancel');
+  const modalSave = document.getElementById('modalSave');
+  const printPreview = document.getElementById('printPreview');
+  const printPages = document.getElementById('printPages');
+  const previewCount = document.getElementById('previewCount');
+
+  let cropper = null;
+  let currentEditIndex = -1;
+
+  // ============ HELPERS ============
+  function setStatus(msg, type = '') {
+    statusMsg.textContent = msg;
+    statusMsg.className = 'status-msg ' + type;
+  }
+
+  function revokeUrl(url) { if (url && url.startsWith('blob:')) URL.revokeObjectURL(url); }
+
+  function revokeAll() {
+    state.items.forEach(item => {
+      revokeUrl(item.originalUrl);
+      revokeUrl(item.editedUrl);
+    });
+  }
+
+  function updateButtons() {
+    const has = state.items.length > 0;
+    generateBtn.disabled = !has;
+    exportBtn.disabled = !state.generated || state.items.length === 0;
+    clearBtn.disabled = !has;
+  }
+
+  // ============ UPLOAD ============
+  fileInput.addEventListener('change', async (e) => {
+    const files = Array.from(e.target.files || []).filter(f => f.type.startsWith('image/'));
+    if (!files.length) {
+      setStatus('Nenhuma imagem válida selecionada.', 'error');
+      return;
+    }
+
+    setStatus(`Carregando ${files.length} imagem(ns)...`);
+
+    // Limpa estado anterior
+    revokeAll();
+    state.items = [];
+    state.files = files;
+    state.generated = false;
+
+    // Carrega metadados de cada imagem
+    const loadPromises = files.map((file, idx) => new Promise((resolve) => {
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => resolve({
+        file, originalUrl: url, editedUrl: null,
+        width: img.naturalWidth, height: img.naturalHeight,
+        rotation: 0, flipH: false, flipV: false,
+        cropData: null
+      });
+      img.onerror = () => resolve({
+        file, originalUrl: url, editedUrl: null,
+        width: 1000, height: 1500,
+        rotation: 0, flipH: false, flipV: false, cropData: null
+      });
+      img.src = url;
+    }));
+
+    state.items = await Promise.all(loadPromises);
+
+    setStatus(`${state.items.length} imagem(ns) carregada(s). Clique em "Gerar Álbum".`, 'success');
+    updateButtons();
+    albumGrid.innerHTML = `<div class="empty-message" style="font-size:1.1rem;">
+      ✨ ${state.items.length} fotografia${state.items.length > 1 ? 's' : ''} pronta${state.items.length > 1 ? 's' : ''}<br>
+      <span style="font-size:0.85rem; letter-spacing:2px; color:#9e8b74;">Clique em "Gerar Álbum" para visualizar</span>
+    </div>`;
+    emptyMessage && (emptyMessage.style.display = 'none');
+  });
+
+  // ============ RENDER GRID ============
+  function renderGrid() {
+    albumGrid.innerHTML = '';
+    state.items.forEach((item, idx) => {
+      const card = document.createElement('div');
+      card.className = 'photo-card';
+      card.dataset.index = idx;
+
+      const img = document.createElement('img');
+      img.src = item.editedUrl || item.originalUrl;
+      img.alt = item.file.name;
+      img.loading = 'lazy';
+
+      const badge = document.createElement('div');
+      badge.className = 'index-badge';
+      badge.textContent = String(idx + 1).padStart(2, '0');
+
+      const overlay = document.createElement('div');
+      overlay.className = 'card-overlay';
+      overlay.innerHTML = `<button data-edit="${idx}">Editar</button>`;
+
+      card.appendChild(img);
+      card.appendChild(badge);
+      card.appendChild(overlay);
+      albumGrid.appendChild(card);
+    });
+
+    // Eventos de edição
+    albumGrid.querySelectorAll('[data-edit]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openEditor(parseInt(btn.dataset.edit, 10));
+      });
+    });
+  }
+
+  // ============ GERAR ÁLBUM ============
+  generateBtn.addEventListener('click', () => {
+    if (!state.items.length) return;
+    state.generated = true;
+    renderGrid();
+    setStatus(`Álbum gerado com ${state.items.length} página(s). Pronto para exportar.`, 'success');
+    updateButtons();
+    document.getElementById('albumGrid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  // ============ LIMPAR ============
+  clearBtn.addEventListener('click', () => {
+    if (!confirm('Tem certeza que deseja limpar todas as fotografias?')) return;
+    revokeAll();
+    state.items = [];
+    state.files = [];
+    state.generated = false;
+    fileInput.value = '';
+    albumGrid.innerHTML = `<div class="empty-message">Suas fotografias aparecerão aqui em um álbum de prestígio</div>`;
+    setStatus('Selecione as fotografias para começar');
+    updateButtons();
+  });
+
+  // ============ MODAL DE EDIÇÃO ============
+  function openEditor(index) {
+    currentEditIndex = index;
+    const item = state.items[index];
+    cropperImage.src = item.originalUrl;
+    editModal.classList.add('active');
+
+    // Destroi cropper anterior
+    if (cropper) { cropper.destroy(); cropper = null; }
+
+    // Aguarda a imagem carregar
+    cropperImage.onload = () => {
+      cropper = new Cropper(cropperImage, {
+        aspectRatio: PAGE_W_CM / PAGE_H_CM, // 17.5 / 26
+        viewMode: 1,
+        dragMode: 'move',
+        autoCropArea: 1,
+        restore: false,
+        guides: true,
+        center: true,
+        highlight: false,
+        cropBoxMovable: true,
+        cropBoxResizable: true,
+        toggleDragModeOnDblclick: false,
+        background: false,
+        modal: true,
+        ready() {
+          // Aplica transformações anteriores
+          if (item.rotation) cropper.rotate(item.rotation);
+          if (item.flipH && item.flipV) cropper.scale(-1, -1);
+          else if (item.flipH) cropper.scale(-1, 1);
+          else if (item.flipV) cropper.scale(1, -1);
+          if (item.cropData) cropper.setData(item.cropData);
         }
-      }
+      });
+    };
+  }
 
-      // Limpa completamente o álbum e as seleções (sem apagar os arquivos ainda, apenas exibição)
-      function clearAlbumDisplay() {
-        // Remove todos os cards, mantém apenas a mensagem vazia?
-        // Vamos remover tudo e recriar a mensagem vazia se necessário
-        const cards = albumGrid.querySelectorAll('.photo-card');
-        cards.forEach(card => card.remove());
-        
-        // Se não houver cards, mostra a mensagem vazia
-        if (albumGrid.querySelectorAll('.photo-card').length === 0) {
-          if (!document.getElementById('emptyMessage')) {
-            const emptyDiv = document.createElement('div');
-            emptyDiv.className = 'empty-message';
-            emptyDiv.id = 'emptyMessage';
-            emptyDiv.textContent = 'Suas fotografias aparecerão aqui em um álbum de prestígio';
-            albumGrid.appendChild(emptyDiv);
-          } else {
-            document.getElementById('emptyMessage').style.display = 'block';
-          }
-        } else {
-          const empty = document.getElementById('emptyMessage');
-          if (empty) empty.style.display = 'none';
-        }
-      }
+  function closeEditor() {
+    editModal.classList.remove('active');
+    if (cropper) { cropper.destroy(); cropper = null; }
+    currentEditIndex = -1;
+  }
 
-      // Remove a mensagem de vazio se existir
-      function hideEmptyMessage() {
-        const empty = document.getElementById('emptyMessage');
-        if (empty) empty.style.display = 'none';
-      }
+  modalClose.addEventListener('click', closeEditor);
+  modalCancel.addEventListener('click', closeEditor);
 
-      // Verifica a orientação da imagem e retorna 'portrait' ou 'landscape' ou 'square'
-      // Esta função é usada apenas para definir o atributo data-orientation (informativo)
-      function getImageOrientation(img) {
-        const w = img.naturalWidth;
-        const h = img.naturalHeight;
-        if (w > h) return 'landscape';
-        if (h > w) return 'portrait';
-        return 'square';
+  // Controles do cropper
+  document.querySelectorAll('.cropper-controls button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (!cropper) return;
+      const action = btn.dataset.action;
+      switch (action) {
+        case 'rotateL': cropper.rotate(-90); break;
+        case 'rotateR': cropper.rotate(90); break;
+        case 'flipH': cropper.scale(-1, 1); break;
+        case 'flipV': cropper.scale(1, -1); break;
+        case 'reset':
+          cropper.reset();
+          break;
+        case 'fit':
+          cropper.reset();
+          break;
       }
+    });
+  });
 
-      // Cria um card de foto com base no File e URL
-      function createPhotoCard(file, url) {
-        const card = document.createElement('div');
-        card.className = 'photo-card';
-        
+  // Salvar edição
+  modalSave.addEventListener('click', () => {
+    if (!cropper || currentEditIndex < 0) return;
+    const item = state.items[currentEditIndex];
+
+    // Gera canvas com o corte exato na proporção 17.5x26 em alta resolução (300 DPI)
+    const targetW = Math.round(PAGE_W_CM * CM_TO_PX_300);
+    const targetH = Math.round(PAGE_H_CM * CM_TO_PX_300);
+
+    const canvas = cropper.getCroppedCanvas({
+      width: targetW,
+      height: targetH,
+      imageSmoothingEnabled: true,
+      imageSmoothingQuality: 'high',
+      fillColor: '#000'
+    });
+
+    // Converte para blob URL
+    canvas.toBlob((blob) => {
+      if (!blob) {
+        setStatus('Erro ao processar edição.', 'error');
+        closeEditor();
+        return;
+      }
+      // Revoga URL anterior editada
+      if (item.editedUrl) revokeUrl(item.editedUrl);
+      item.editedUrl = URL.createObjectURL(blob);
+      item.cropData = cropper.getData();
+      item.rotation = cropper.getData().rotate || 0;
+
+      closeEditor();
+      renderGrid();
+      setStatus('Ajuste aplicado com sucesso!', 'success');
+      updateButtons();
+    }, 'image/jpeg', 0.95);
+  });
+
+  // ============ EXPORTAR PARA IMPRESSÃO ============
+  exportBtn.addEventListener('click', async () => {
+    if (!state.items.length) return;
+
+    setStatus('Preparando pré-visualização...');
+    exportBtn.disabled = true;
+
+    try {
+      printPages.innerHTML = '';
+      const pageW = PAGE_W_CM * CM_TO_PX_96;
+      const pageH = PAGE_H_CM * CM_TO_PX_96;
+      const bleedPx = BLEED_CM * CM_TO_PX_96;
+      const safePx = SAFE_CM * CM_TO_PX_96;
+
+      for (let i = 0; i < state.items.length; i++) {
+        const item = state.items[i];
+        const srcUrl = item.editedUrl || item.originalUrl;
+
+        // Cria página
+        const page = document.createElement('div');
+        page.className = 'print-page';
+        page.style.width = pageW + 'px';
+        page.style.height = pageH + 'px';
+
+        // Imagem com ajuste automático (object-fit: cover cobre 100%)
         const img = document.createElement('img');
-        img.src = url;
-        img.alt = file.name;
-        img.loading = 'lazy'; // carregamento preguiçoso para muitas imagens
-        
-        // Quando a imagem carregar, definimos a orientação no card
-        img.onload = function() {
-          const orientation = getImageOrientation(img);
-          card.setAttribute('data-orientation', orientation);
-          // Não é necessário ajustar CSS, o object-fit: contain já mantém a proporção e orientação
-          // A foto vertical aparece vertical, horizontal aparece horizontal
-        };
-        
-        // Caso a imagem falhe ao carregar
-        img.onerror = function() {
-          card.style.background = '#2a1f1a';
-          card.innerHTML = '<div style="color:#b9a68b; font-size:0.8rem; text-align:center; padding:1rem;">Imagem indisponível</div>';
-        };
+        img.className = 'page-photo';
+        img.src = srcUrl;
+        img.alt = `Página ${i + 1}`;
 
-        card.appendChild(img);
-        return card;
-      }
-
-      // Processa os arquivos selecionados e monta o álbum
-      function buildAlbum() {
-        // Se não houver arquivos, avisa
-        if (selectedFiles.length === 0) {
-          statusMsg.textContent = 'Nenhuma fotografia importada. Selecione imagens primeiro.';
-          return;
-        }
-
-        // Limpa as URLs antigas (revoga)
-        revokeAllUrls();
-        
-        // Limpa o grid
-        albumGrid.innerHTML = ''; // remove tudo, inclusive a mensagem vazia
-        
-        // Cria fragmento para performance
-        const fragment = document.createDocumentFragment();
-
-        // Para cada arquivo, cria URL e card
-        selectedFiles.forEach(file => {
-          const url = URL.createObjectURL(file);
-          imageUrls.push(url);
-          
-          const card = createPhotoCard(file, url);
-          fragment.appendChild(card);
+        // Aguarda carregar
+        await new Promise((resolve) => {
+          img.onload = resolve;
+          img.onerror = resolve;
         });
 
-        // Adiciona todos os cards de uma vez
-        albumGrid.appendChild(fragment);
-        
-        // Atualiza estado visual (remove mensagem vazia se por acaso ficou)
-        hideEmptyMessage(); // não deve ter, mas garantimos
-        
-        // Rola suavemente até o álbum
-        albumGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        
-        // Atualiza mensagem
-        statusMsg.textContent = `Álbum gerado com ${selectedFiles.length} fotografia${selectedFiles.length > 1 ? 's' : ''}.`;
+        // Marcas de corte
+        const marks = document.createElement('div');
+        marks.className = 'crop-marks';
+        marks.innerHTML = `
+          <div class="mark-tr"></div>
+          <div class="mark-bl"></div>
+          <div class="bleed-line"></div>
+          <div class="safe-area"></div>
+        `;
+
+        // Rótulo
+        const label = document.createElement('div');
+        label.className = 'page-info';
+        label.textContent = `Página ${i + 1} de ${state.items.length} · 17,5 × 26 cm · 300 DPI`;
+
+        page.appendChild(img);
+        page.appendChild(marks);
+        page.appendChild(label);
+        printPages.appendChild(page);
       }
 
-      // Manipula a seleção de arquivos
-      function handleFileSelect(event) {
-        const files = event.target.files;
-        if (!files || files.length === 0) {
-          return;
+      previewCount.textContent = state.items.length;
+      printPreview.classList.add('active');
+      setStatus('Pré-visualização pronta. Use "Imprimir" ou "Baixar PDF".', 'success');
+    } catch (err) {
+      console.error(err);
+      setStatus('Erro ao gerar pré-visualização.', 'error');
+    } finally {
+      exportBtn.disabled = false;
+    }
+  });
+
+  // Fechar preview
+  document.getElementById('closePreviewBtn').addEventListener('click', () => {
+    printPreview.classList.remove('active');
+  });
+
+  // ============ IMPRIMIR ============
+  document.getElementById('printBtn').addEventListener('click', () => {
+    // Aplica estilos de impressão temporários
+    const style = document.createElement('style');
+    style.id = 'print-style-temp';
+    style.textContent = `
+      @media print {
+        @page { size: 17.5cm 26cm; margin: 0; }
+        body * { visibility: hidden !important; }
+        .print-preview, .print-preview * { visibility: visible !important; }
+        .print-preview { position: absolute; inset: 0; background: #fff !important; }
+        .print-toolbar { display: none !important; }
+        .print-pages { gap: 0 !important; padding: 0 !important; }
+        .print-page {
+          box-shadow: none !important;
+          page-break-after: always;
+          break-after: page;
+          margin: 0 !important;
         }
-
-        // Converte FileList para array e filtra apenas imagens
-        const imageFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
-        
-        if (imageFiles.length === 0) {
-          statusMsg.textContent = 'Nenhum arquivo de imagem válido selecionado.';
-          return;
+        .print-page:last-child { page-break-after: auto; break-after: auto; }
+        .crop-marks::before, .crop-marks::after,
+        .crop-marks .mark-tr, .crop-marks .mark-bl {
+          border-color: #000 !important;
         }
+        .bleed-line { border-color: #000 !important; }
+        .safe-area { border-color: #666 !important; }
+      }
+    `;
+    document.head.appendChild(style);
+    window.print();
+    setTimeout(() => style.remove(), 1000);
+  });
 
-        // Limita a quantidade? Não, suporta mais de 100. Mas avisamos se for muito grande?
-        // Suporta quantas o navegador aguentar (URLs de objeto são leves até certo ponto)
-        // Vamos apenas manter todos.
+  // ============ BAIXAR PDF ============
+  document.getElementById('downloadPdfBtn').addEventListener('click', async () => {
+    const { jsPDF } = window.jspdf;
+    if (!jsPDF) { setStatus('Biblioteca PDF não carregada.', 'error'); return; }
 
-        // Atualiza o array de arquivos (substitui ou adiciona? Ação: substituir os antigos por novos)
-        // Para um comportamento mais intuitivo: substitui os arquivos anteriores pelos novos selecionados.
-        // Mas o usuário pode querer adicionar mais? A interface é simples, então vamos SUBSTITUIR.
-        // Se quiser adicionar, pode ser uma melhoria futura.
-        selectedFiles = imageFiles;
+    setStatus('Gerando PDF em alta resolução...');
+    const btn = document.getElementById('downloadPdfBtn');
+    btn.disabled = true;
 
-        // Limpa álbum anterior e URLs antigas
-        revokeAllUrls();
-        albumGrid.innerHTML = ''; // limpa
-        
-        // Recria a mensagem vazia se não houver fotos? Mas temos fotos, então não mostramos vazio
-        // Adicionamos um feedback
-        updateCounter();
-        statusMsg.textContent = `${selectedFiles.length} imagem${selectedFiles.length > 1 ? 'ns' : ''} importada${selectedFiles.length > 1 ? 's' : ''}. Clique em "Gerar álbum de luxo".`;
-        
-        // Opcional: mostrar uma prévia? Não, só gerar álbum quando clicar.
-        // Mas para UX, podemos já mostrar as fotos? A ideia é que o botão gere.
-        // No entanto, o usuário pode querer ver o que importou. Vamos exibir uma prévia? 
-        // Para manter o controle, vamos apenas limpar e mostrar a mensagem vazia? Não, melhor colocar placeholders?
-        // Vou exibir uma mensagem no grid? Deixo vazio? Acho que mostrar a mensagem "Clique em gerar álbum" é bom.
-        if (selectedFiles.length > 0) {
-          albumGrid.innerHTML = `<div class="empty-message" style="display:block; font-size:1.2rem; color:#9e8b74;">✨ ${selectedFiles.length} fotografia${selectedFiles.length > 1 ? 's' : ''} prontas para o álbum ✨<br><span style="font-size:0.9rem; letter-spacing:2px;">Clique em "Gerar álbum de luxo"</span></div>`;
+    try {
+      // PDF no formato exato 17,5 x 26 cm
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'cm',
+        format: [PAGE_W_CM, PAGE_H_CM],
+        compress: true
+      });
+
+      const targetW = Math.round(PAGE_W_CM * CM_TO_PX_300);
+      const targetH = Math.round(PAGE_H_CM * CM_TO_PX_300);
+
+      for (let i = 0; i < state.items.length; i++) {
+        const item = state.items[i];
+        const srcUrl = item.editedUrl || item.originalUrl;
+
+        const dataUrl = await renderToDataURL(srcUrl, targetW, targetH);
+
+        if (i > 0) pdf.addPage([PAGE_W_CM, PAGE_H_CM], 'portrait');
+        pdf.addImage(dataUrl, 'JPEG', 0, 0, PAGE_W_CM, PAGE_H_CM, undefined, 'FAST');
+      }
+
+      pdf.save(`LuxeAlbum_${new Date().toISOString().slice(0,10)}.pdf`);
+      setStatus(`PDF gerado com ${state.items.length} página(s) em 300 DPI!`, 'success');
+    } catch (err) {
+      console.error(err);
+      setStatus('Erro ao gerar PDF.', 'error');
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  // Renderiza uma imagem em canvas no tamanho exato (corte inteligente por object-fit: cover)
+  function renderToDataURL(src, targetW, targetH) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = targetW;
+        canvas.height = targetH;
+        const ctx = canvas.getContext('2d');
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+        ctx.fillStyle = '#000';
+        ctx.fillRect(0, 0, targetW, targetH);
+
+        // Simula object-fit: cover
+        const imgRatio = img.naturalWidth / img.naturalHeight;
+        const targetRatio = targetW / targetH;
+        let drawW, drawH, dx, dy;
+
+        if (imgRatio > targetRatio) {
+          // Imagem mais larga: ajusta pela altura
+          drawH = targetH;
+          drawW = targetH * imgRatio;
+          dx = (targetW - drawW) / 2;
+          dy = 0;
         } else {
-          // Se não houver, volta mensagem padrão
-          albumGrid.innerHTML = `<div class="empty-message" id="emptyMessage">Suas fotografias aparecerão aqui em um álbum de prestígio</div>`;
+          // Imagem mais alta: ajusta pela largura
+          drawW = targetW;
+          drawH = targetW / imgRatio;
+          dx = 0;
+          dy = (targetH - drawH) / 2;
         }
-      }
 
-      // Event listeners
-      fileInput.addEventListener('change', handleFileSelect);
-      
-      generateBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        buildAlbum();
-      });
+        ctx.drawImage(img, dx, dy, drawW, drawH);
+        resolve(canvas.toDataURL('image/jpeg', 0.95));
+      };
+      img.onerror = () => reject(new Error('Falha ao carregar imagem: ' + src));
+      img.src = src;
+    });
+  }
 
-      // Inicializa: garante que a mensagem vazia está correta
-      (function init() {
-        // Se não houver nada no grid, coloca a mensagem vazia
-        if (!albumGrid.hasChildNodes() || albumGrid.children.length === 0) {
-          albumGrid.innerHTML = `<div class="empty-message" id="emptyMessage">Suas fotografias aparecerão aqui em um álbum de prestígio</div>`;
-        }
-        updateCounter();
-      })();
+  // ============ INICIALIZAÇÃO ============
+  updateButtons();
+  setStatus('Selecione as fotografias para começar');
 
-      // Limpeza de URLs quando a página for descarregada
-      window.addEventListener('beforeunload', function() {
-        revokeAllUrls();
-      });
+  // Limpeza ao sair
+  window.addEventListener('beforeunload', revokeAll);
 
-    })();
-  </script>
+})();
+</script>
 </body>
 </html>
